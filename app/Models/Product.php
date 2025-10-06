@@ -6,31 +6,36 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    public static $products = [
-        ["id" => "1", "name" => "TV", "description" => "Best TV"],
-        ["id" => "2", "name" => "iPhone", "description" => "Best iPhone"],
-        ["id" => "3", "name" => "Chromecast", "description" => "Best Chromecast"],
-        ["id" => "4", "name" => "Glasses", "description" => "Best Glasses"]
+
+    protected $fillable = [
+        'name',
+        'description',
     ];
 
-    public static function all($columns = ['*'])
+    // Accessors (getters)
+
+    public function getIdAttribute($value): int
     {
-        return self::$products;
+        return (int) $value;
+    }
+    public function getNameAttribute($value): string
+    {
+        return (string) $value;
     }
 
-    public static function findOrFail($id)
+    public function getDescriptionAttribute($value): ?string
     {
-        foreach (self::$products as $product) {
-            if ($product['id'] === $id) {
-                return $product;
-            }
-        }
-        return null;
+        return $value === null ? null : (string) $value;
     }
 
-    public static function create(array $attributes = [])
+    // Mutators (setters)
+    public function setNameAttribute($value): void
     {
-        self::$products[] = $attributes;
-        return $attributes;
+        $this->attributes['name'] = is_string($value) ? $value : (string) $value;
+    }
+
+    public function setDescriptionAttribute($value): void
+    {
+        $this->attributes['description'] = $value === null ? null : (string) $value;
     }
 }

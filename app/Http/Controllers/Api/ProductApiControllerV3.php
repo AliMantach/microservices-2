@@ -37,30 +37,17 @@ class ProductApiControllerV3 extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        // Validate input without DB-backed unique rule (we'll enforce uniqueness manually)
         $validatedData = $request->validate([
-            'id' => 'required|string',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
-        // Ensure the ID is unique within the in-memory list
-        $id = (string) $validatedData['id'];
-        if (Product::findOrFail($id)) {
-            return response()->json([
-                'message' => 'The id has already been taken.'
-            ], 422);
-        }
+        $product = Product::create($validatedData);
 
-        // Create the product in-memory (see Product::create override)
-        $product = Product::create([
-            'id' => $id,
-            'name' => $validatedData['name'],
-            'description' => $validatedData['description'] ?? null,
-        ]);
-
-
-        return response()->json(['message' => 'Product created successfully', 'product' => $product], 201);
+        return response()->json([
+            'message' => 'Product created successfully',
+            'product' => $product
+        ], 201);
     }
 
 }
