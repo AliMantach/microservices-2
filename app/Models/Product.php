@@ -27,4 +27,10 @@ class Product extends Model
         }
         return null;
     }
+
+    public static function create(array $attributes = [])
+    {
+        self::$products[] = $attributes;
+        return $attributes;
+    }
 }
