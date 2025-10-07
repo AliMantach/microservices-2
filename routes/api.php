@@ -20,4 +20,5 @@ Route::get('/v3/products', [ProductApiControllerV3::class, 'index'])->name('prod
 Route::get('/v3/products/paginate', [ProductApiControllerV3::class, 'paginate'])->name('products.v3.paginate');
 Route::get('/v3/products/{id}', [ProductApiControllerV3::class, 'show'])->name('products.v3.show');
 Route::post('/v3/products', [ProductApiControllerV3::class, 'store'])->name('products.v3.store');
+Route::put('/v3/products/{id}', [ProductApiControllerV3::class, 'update'])->name('products.v3.update');
 
